@@ -7,7 +7,7 @@ var app = angular.module('cardsApp',['ngResource',
                                      'app.directives.leavebar',
                                      'angularModalService'])
 //var $injector = window.angular.injector(['ng']);
-app.config(['$urlRouterProvider', '$stateProvider','$locationProvider', function($urlRouterProvider, $stateProvider, $locationProvider) {
+app.config(['$urlRouterProvider', '$stateProvider','$locationProvider',function($urlRouterProvider, $stateProvider, $locationProvider) {
     // $urlRouterProvider.otherwise('/#/home');
     
     $stateProvider
@@ -37,14 +37,56 @@ app.config(['$urlRouterProvider', '$stateProvider','$locationProvider', function
         controller: 'leavesController'
       })
       .state('leavereport.calendarview', {
-        url: '/calendarview',
-        templateUrl: 'templates/directives/calendarview.html',
-        controller: 'calendarController'
         // resolve:{
-        //   message: function(messageService){
-        //         return messageService.getMessage();
-        // }
-        // }
+        //    // mydata: function(){
+        //    //  return 'hi';
+        //    // }
+        //  mydata: function($q, $http){
+        //     var deferred = $q.defer();
+        //     $http.get('/api/data/collections/leavereport')
+        //        .then (function (data) {
+                
+                
+        //         //alert(data.data.responds[0]);
+        //         //alert(JSON.stringify(data.data))
+        //         var type = ['halfday','warning']
+        //         var myObj = {}
+        //         var varray=[];
+        //         for(var i=0;i<data.data.responds.length;i++)
+        //         {
+        //             var sdate = new Date(data.data.responds[i].startdate);
+        //             var edate = new Date(data.data.responds[i].enddate);
+        //             myObj.title     = data.data.responds[i].requester;
+        //             myObj.type      = 'halfday';
+        //             myObj.startsAt  = sdate;
+        //             myObj.endsAt    = edate;
+        //             myObj.draggable = true;
+        //             myObj.resizable = true;
+
+        //             varray.push(JSON.parse(JSON.stringify(myObj)))
+        //             myObj = {};
+        //         } 
+
+                   
+        //            //alert(varray);
+        //        });
+        //        deferred.resolve('hi')
+        //       return deferred.promise;
+        //  }
+        // },
+        // resolve:{
+        //   mydata: function(){
+
+        //           var url = '/api/data/collections/leavereport';
+        //           return $http.get(url, {cache: true});
+        //       }
+
+          
+        // },
+        url: '/calendarview',
+        templateUrl: 'templates/directives/calendarview.html'
+        // controller:'calendarController'
+
       });      
       // $urlRouterProvider.when('/leavereport',{redirectTo: '/home'});
       $locationProvider.html5Mode(true).hashPrefix('!');

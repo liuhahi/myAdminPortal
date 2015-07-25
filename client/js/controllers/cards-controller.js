@@ -50,15 +50,57 @@ app.controller('leavesController',function ($scope,MyCollectionService,ModalServ
             };
 });
 
-app.controller('calendarController',function ($modal,myLeaveObj) {
+app.controller('calendarController',['myLeaveObj',function (myLeaveObj,$modal) {
+        console.log(new Date().getMilliseconds())
+        var vm = this;
+        var mystatus = JSON.parse(JSON.stringify(myLeaveObj))
+        if(mystatus.$$state.status == 0)
+        {
+            vm.events = [];
+            vm.calendarView = 'month';
+            vm.calendarDay = new Date();
+            //alert('not yet')
+        }
+        myLeaveObj.then(function(varray){
+            vm.events = varray;
+            vm.calendarView = 'month';
+            vm.calendarDay = new Date();
+            console.log('2nd'+new Date().getMilliseconds())
+        });
+        // Settings.promise.success(function(response){
+            //alert(mydata.promise)
 
-    var data = myLeaveObj;    
-    var vm = this;
-    alert('datais'+JSON.stringify(data))
+        //         //alert(JSON.stringify(response))
+        //         var type = ['halfday','warning']
+        //         var myObj = {}
+        //         var varray=[];
+        //         for(var i=0;i<response.responds.length;i++)
+        //         {
+        //             var sdate = new Date(response.responds[i].startdate);
+        //             var edate = new Date(response.responds[i].enddate);
+        //             myObj.title     = response.responds[i].requester;
+        //             myObj.type      = 'halfday';
+        //             myObj.startsAt  = sdate;
+        //             myObj.endsAt    = edate;
+        //             myObj.draggable = true;
+        //             myObj.resizable = true;
+
+        //             varray.push(JSON.parse(JSON.stringify(myObj)))
+        //             myObj = {};
+        //         } 
+        //         vm.events = varray;
+        //         })
+
+    // var myser = new MyCollectionService();
+    //vm.events = StoreProducts.getData();
+    // myLeaveObj.then(function(varray){
+
+        
+    // })
+    
+    
     //These variables MUST be set as a minimum for the calendar to work
-    vm.calendarView = 'month';
-    vm.calendarDay = new Date();
-    vm.events = data;
+
 
 
     function showModal(action, event) {
@@ -96,7 +138,7 @@ app.controller('calendarController',function ($modal,myLeaveObj) {
     };
 
 
-});
+}]);
 
 app.controller('LeaveModalController',  [ '$scope','requester','reason','status','approver','startdate','enddate',
                                   function($scope,requester,reason,status,approver,startdate,enddate) {

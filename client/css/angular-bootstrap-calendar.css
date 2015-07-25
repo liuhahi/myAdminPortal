@@ -307,6 +307,10 @@
 .cal-day-box .day-highlight.dh-event-inverse {
   border: 1px solid #1b1b1b;
 }
+.cal-day-box .day-highlight.dh-event-halfday {
+  border: 1px solid red;
+  /*border-radius: 0 0 90px 90px;*/
+}
 .cal-day-box .day-highlight.dh-event-success {
   border: 1px solid darkgreen;
 }
@@ -346,6 +350,11 @@
 }
 .event-inverse {
   background-color: #1b1b1b;
+}
+.event-halfday {
+  background-color: red;
+  border-radius: 0 0 20px 20px;
+  height:8px;
 }
 .event-success {
   background-color: darkgreen;
