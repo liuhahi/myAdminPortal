@@ -147,7 +147,37 @@ GetRequests.prototype.commentCard = function(comments,cardid,callback){
 	{
 		errorHandler (err)
 	}else
-	{							  
+	{	
+		var strDada = JSON.stringify(data);
+		var fs = require('fs');
+			fs.writeFile('cardData.txt', strDada, function (err) {
+			if (err) 
+			{
+				errorHandler (err)
+			}
+		});							  
+		callback(JSON.stringify(data));
+	}
+	})
+}
+
+GetRequests.prototype.advCommentCard = function(comments,cardid,itemid,callback){
+	t.post('/1/cards/'+cardid+'/actions/comments',{text:comments},function(err, data) {    		
+	if (err) 
+	{
+		errorHandler (err)
+	}else
+	{	
+		var strDada = JSON.stringify(data);
+		var fs = require('fs');
+			fs.writeFile('cardData.txt', strDada, function (err) {
+			if (err) 
+			{
+				errorHandler (err)
+			}
+		});			
+			//typeof()
+		data.itemid=itemid;				  
 		callback(JSON.stringify(data));
 	}
 	})
