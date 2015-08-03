@@ -37,14 +37,14 @@ async.whilst(
         //console.log(Jcards.length);  
         console.log(Date())
  
-        var collection = _db.collection('data');
+        var collection = _db.collection('srcCards');
 
         
         collection.find({}).toArray(function (err, result) {
         var Jcards=JSON.parse(JSON.stringify(result));
         for(var i=0; i < Jcards.length; ++i) {
             var vid=Jcards[i]._id;
-            //console.log(vid)
+            // console.log(vid)
             pollingCards(Jcards[i]);
             }
         });
@@ -56,11 +56,11 @@ async.whilst(
     );
 
 function pollingCards(card){
+    //console.log("polling")
 var lid = card.srcID;
 var targetID = card.dupID;
 var _id = card._id;
-if(lid == null || targetID ==null)
-    return;
+// console.log(_id)
 g.getActionByCardId(lid,function(data){
             if(typeof(data) == "undefined")
             {
@@ -75,7 +75,7 @@ g.getActionByCardId(lid,function(data){
                 counter--;
             }
             
-            //console.log(obj1);
+            // console.log(obj1);
             async.each(obj1,
                   // 2nd param is the function that each item is passed to
                   function(item, callback){
@@ -84,9 +84,9 @@ g.getActionByCardId(lid,function(data){
                     //request database
                     var collection = _db.collection('srcCards');
                     //find the time if not found create a new time
-                    collection.findById(_id,function (err, doc) {
-                        //console.log(doc);
-                        console.log("The 1st time is "+lastTime);
+                    collection.findById(_id.toString(),function (err, doc) {
+                        // console.log(doc.srcID);
+                        console.log("The 1st time is "+doc.lastUpdatingTime);
                         var lastTime = new Date();
                         if(doc.lastUpdatingTime != null && doc.lastUpdatingTime != "")
                         {
@@ -97,8 +97,13 @@ g.getActionByCardId(lid,function(data){
                         {
                             //console.log("empty");
                             doc.lastUpdatingTime = lastTime;
-                            collection.updateById(_id,doc,function (err, doc) {
-
+                            // console.log("----------------"+doc.lastUpdatingTime)
+                            // var sentTime = new Date();
+                            // var month = sentTime.getMonth()+1;
+                            // var _db_name = "TrelloMsg_"+sentTime.getFullYear()+'_'+month+'_'+sentTime.getDate();
+                            var srcCollection = _db.collection('srcCards');
+                            srcCollection.updateById(_id.toString(),doc,function (err, doc) {
+                                console.log("Result ===="+doc)
                             })                            
                         }               
                     console.log("The 2nd time is "+lastTime);
@@ -111,38 +116,36 @@ g.getActionByCardId(lid,function(data){
                     }
                     dateFormat(rTime, "isoDateTime");
                     lastTime.setSeconds(lastTime.getSeconds() + 1);
-                    //console.log(rTime>lastTime);
+                    //console.log("Real time is: "+rTime)
+                    console.log(rTime>lastTime);
                     if(rTime>lastTime){
-                        switch (item.type) {
-                            //for comment card
-                            case 'commentCard':
-                                    var commentContains = item.memberCreator.fullName+" commented: "+item.data.text;
-                                    g.commentCard(commentContains,targetID,function(data){
-                                        console.log(data);
-                                    });
-                                    break;
-                            case 'updateCard':                                    
-                                    break;  
-                            //for attachment
-                            case 'addAttachmentToCard': 
-                                    var commentContains = item.memberCreator.fullName+" attached a file: "+item.data.attachment.name;
-                                    g.commentCard(commentContains,targetID,function(data){
-                                        console.log(data);
-                                    });
-                                    var card = '{"id":"'+targetID+
-                                                '","name":"'+item.data.attachment.name+
-                                                '","url":"'+item.data.attachment.url+'"}';
-                                    console.log("-----------------attachment found--------------")                                                                                    
-                                    g.addAttachmentToCard(card,function(data){
-                                        console.log(data);
-                                    })                                   
-                                    break;                        
+                        //TrelloMsg_YYYY_MM_DD
+                        //create or insert to the stack
+                        var sentTime = new Date();
+                        var month = sentTime.getMonth()+1;
+                        var _db_name = "TrelloMsg_"+sentTime.getFullYear()+'_'+month+'_'+sentTime.getDate();
+                        console.log("db name :"+_db_name)    
+                        //_db_name = _db_name+"";                        
+                        // _db.createCollection(_db_name,function(err, result) {
+                        //     if (err) {
+                        //         console.log(err);
+                        //         throw err;
+                        //     }
+                        //     console.log("create result "+result);
+                        // }
+                        // );
+                        var collection = _db.collection(_db_name);
+                        collection.insert({text:item.data.text,cardid:item.id,msgReferenceID:item.data.card.id,msgReferenceName:item.data.card.name,SubmissionTimeStamp:item.date,originator:item.memberCreator.username},function(err, result) {
+                            if (err) {
+                                console.log(err);
+                                throw err;
+                            }
+                            console.log("INSERT result"+JSON.stringify(result));
                         }
-                        //after different get requests
-                        //console.log("rTime:       "+rTime);
-                        //console.log("latestRecord "+lastTime);
+                        );
                         doc.lastUpdatingTime = rTime;
-                        collection.updateById(_id,doc,function (err, doc) {
+                        var srcCollection = _db.collection('srcCards');
+                        srcCollection.updateById(_id,doc,function (err, doc) {
 
                         })                                        
                     }
