@@ -73,10 +73,11 @@ function pushToSentStack(myObj){
     if(myObj !=null || typeof(myObj) != "undefined"){
         //console.log(sentTime.getDay()+'-'+sentTime.getMonth()+'-'+sentTime.getYear()+myObj.id)
         //create or insert to the stack
-        var month = sentTime.getMonth()+1;
-        var _db_name = sentTime.getDate()+'-'+month+'-'+sentTime.getFullYear();
-        console.log("db name :"+_db_name)    
-        _db_name = _db_name+"";
+        // var month = sentTime.getMonth()+1;
+        // var _db_name = sentTime.getDate()+'-'+month+'-'+sentTime.getFullYear();
+        // console.log("db name :"+_db_name)    
+        //_db_name = _db_name+"";
+        _db_name = "TrelloMsgSentRecord";
         _db.createCollection(_db_name,function(err, result) {
             if (err) {
                 console.log(err);
