@@ -12,3 +12,5 @@ file related
 --getRequests.js
 DB format for sendingQueue(changable):
 stackExample.txt
+
+adding a documentation file
