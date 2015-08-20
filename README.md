@@ -14,3 +14,8 @@ DB format for sendingQueue(changable):
 stackExample.txt
 
 adding a documentation file
+...
+Run sts.js: node sts.js
+
+this will get the message waiting in the sending stack and post in the trello.
+after that it will be archived in a sent stack. so it is call stack to stack.
