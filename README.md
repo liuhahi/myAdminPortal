@@ -15,7 +15,11 @@ stackExample.txt
 
 adding a documentation file
 ...
-Run sts.js: node sts.js
+# command to run getRaw.js: node getRaw.js
+
+this will do the polling, when there is a new data of the listening cards, it will generate a new record in the database, the name of the database is TrelloMsg_year_month_date
+
+# command to run sts.js: node sts.js
 
 this will get the message waiting in the sending stack and post in the trello.
 after that it will be archived in a sent stack. so it is call stack to stack.
