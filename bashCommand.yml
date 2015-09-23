@@ -1,2 +1,2 @@
-# sudo ssh -i singapore_key.pem ubuntu@ec2-52-74-0-31.ap-southeast-1.compute.amazonaws.com
+# sudo ssh -i yourkey.pem ubuntu@ec2-52-74-0-31.ap-southeast-1.compute.amazonaws.com
 # to run open it use 52.74.0.31:3000
